@@ -27,6 +27,16 @@ To demonstrate locally:
 
 # Part 3 - TLS Signed by Intermediate Certificate
 
+Scripts within the [Part 3](./Part_3/) folder showcase generating a Root Certificate Authority (RCA), generating an Intermediate Certificate Authority (ICA), the RCA used to sign the ICA, and then the ICA sued to sign a server certificate.  Finally, the Makefile will launch a local nginx webservice with the certificate chain and server private key.
+
+To demonstrate locally:
+
+1. Set an environment variable value for TLS_HOST such as "local.example.com"
+2. Run ```make demo```
+3. Add the "rootCA.crt" as a trusted root certificate authority to your browser's certificate trusts.  If your browser is delegated to your local workstation, you'll need to add it to your local workstation's trusts.
+4. Update your hosts file to resolve your TLS_HOST value to 127.0.0.1.  On Windows, this file must be edited in Administrator mode at ```C:\Windows\System32\drivers\etc\hosts```.  On Mac, this is at ```/etc/hosts```.  Create a new line in the file like ```127.0.0.1 local.example.com```
+5. Open your browser to the TLS_HOST you specified, but at port 8443.  For example, if you used "local.example.com", that would be https://local.example.com:8443/
+
 # Part 4 - Mutual TLS
 
 # Part 5 - Manual Commands - CSR Extraction and Cert Inspection
