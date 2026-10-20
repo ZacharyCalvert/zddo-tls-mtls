@@ -25,7 +25,7 @@ clean-server:
 	@rm server.crt > /dev/null 2>&1 || true
 
 gen-server-key:
-	openssl req -new -newkey rsa:2048 -nodes -keyout server.key -extensions v3_req -out server.csr -subj "/C=US/ST=State/L=City/O=Org/CN=${TLS_HOST}" -addext "subjectAltName=DNS:${TLS_HOST}"
+	openssl req -new -newkey rsa:2048 -nodes -keyout server.key -extensions v3_req -out server.csr -subj "/C=US/ST=Texas/L=Dallas/O=Zach Does DevOps/CN=${TLS_HOST}" -addext "subjectAltName=DNS:${TLS_HOST}"
 
 rca-sign:
 	envsubst '$$TLS_HOST' < ext_parameterized.cnf > ext.cnf
