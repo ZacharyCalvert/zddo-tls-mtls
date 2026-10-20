@@ -1,6 +1,6 @@
 .PHONY: self-signed clean stop build demo
 
-TLS_HOST ?= demo.zachcalvert.com
+export TLS_HOST ?= demo.zachcalvert.com
 
 self-signed:
 	openssl req -newkey rsa:4096 -x509 -sha256 -days 3650 -noenc -out certificate.crt -keyout private.key -subj "/C=US/ST=State/L=City/O=Org/CN=${TLS_HOST}" -addext "subjectAltName=DNS:${TLS_HOST}"
@@ -14,6 +14,7 @@ stop:
 	@docker stop tls-demo > /dev/null 2>&1 || true
 
 build: stop
+	envsubst '$$TLS_HOST' < nginx_parameterized.conf > nginx.conf
 	docker build -t nginx-tls-demo .
 
 demo: clean self-signed build
