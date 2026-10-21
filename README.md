@@ -39,4 +39,16 @@ To demonstrate locally:
 
 # Part 4 - Mutual TLS
 
-# Part 5 - Manual Commands - CSR Extraction and Cert Inspection
+The [Part 4](./Part_4/) folder showcase Mutual TLS (mTLS) whereby we take part 3 and expand the server (nginx) configuration to require the client to provide a certificate.  This is less common for workstations and browsers, and more for ensuring identity is bidirectional, the server provides a certificate indicating who they are and that they were signed by a trusted third party, and the client must provide a TLS certificate as well, also signed by a trusted third party.  
+
+This pattern is found in zero trust environments, such as Kubernetes adopting Istio with services configured to require client authentication.
+
+To demonstrate locally:
+
+1. Set an environment variable value for TLS_HOST such as "local.example.com"
+2. Run ```make demo```
+3. Add the "rootCA.crt" as a trusted root certificate authority to your browser's certificate trusts.  If your browser is delegated to your local workstation, you'll need to add it to your local workstation's trusts.
+4. Update your hosts file to resolve your TLS_HOST value to 127.0.0.1.  On Windows, this file must be edited in Administrator mode at ```C:\Windows\System32\drivers\etc\hosts```.  On Mac, this is at ```/etc/hosts```.  Create a new line in the file like ```127.0.0.1 local.example.com```
+5. Load the "client.pfx" file in your browser's client certificates.  In firefox, this is in privacy and security settings.  It is browser specific, or even development language specific (Python vs Java vs .NET for example).
+5. Open your browser to the TLS_HOST you specified, but at port 8443.  For example, if you used "local.example.com", that would be https://local.example.com:8443/
+
