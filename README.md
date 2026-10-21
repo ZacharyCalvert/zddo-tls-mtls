@@ -23,6 +23,13 @@ To demonstrate locally:
 3. Update your hosts file to resolve your TLS_HOST value to 127.0.0.1.  On Windows, this file must be edited in Administrator mode at ```C:\Windows\System32\drivers\etc\hosts```.  On Mac, this is at ```/etc/hosts```.  Create a new line in the file like ```127.0.0.1 local.example.com```
 4. Open your browser to the TLS_HOST you specified, but at port 8443.  For example, if you used "local.example.com", that would be https://local.example.com:8443/
 
+```mermaid
+flowchart TD
+    A[make demo] --> |openssl| B[Generate Server Private Key]
+    B --> |docker| C[Create nginx image with server key]
+    C --> |docker| D[Launch nginx container on 8443]
+```
+
 # Part 2 - TLS Signed by Root Certificate
 
 Scripts within the [Part 2](./Part_2/) folder showcase generating a Root Certificate Authority (RCA), and using it for signing a server certificate, then launching a local nginx webservice with the certificate chain and server private key.
