@@ -1,0 +1,8 @@
+rootCA.key
+ext.cnf
+nginx.conf
+*.srl
+*.crt
+*.csr
+*.key
+*.pfx
