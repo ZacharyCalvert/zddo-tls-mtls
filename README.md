@@ -66,6 +66,21 @@ To demonstrate locally:
 4. Update your hosts file to resolve your TLS_HOST value to 127.0.0.1.  On Windows, this file must be edited in Administrator mode at ```C:\Windows\System32\drivers\etc\hosts```.  On Mac, this is at ```/etc/hosts```.  Create a new line in the file like ```127.0.0.1 local.example.com```
 5. Open your browser to the TLS_HOST you specified, but at port 8443.  For example, if you used "local.example.com", that would be https://local.example.com:8443/
 
+```mermaid
+flowchart TD
+    A[make demo] --> |openssl| B[Generate Server Private Key]
+    B --> |openssl| S[Generate Certificate Signing Request]
+    S --> |openssl| R[Generate Root Private Key]
+    R --> |openssl| R2[Generate Root Certificate]
+    R2 --> |openssl| I1[Generate Intermediate Private Key]
+    I1 --> |openssl| I2[Generate Intermediate Certificate Signing Requst]
+    I2 --> |openssl| R3[Root Sign Intermediate CSR]
+    R3 --> |openssl| I3[Intermediate Sign Server CSR]
+    I3 --> |BASH| S2[Combine certificate chain]
+    S2 --> |docker| N[Create nginx image with chain and server key]
+    N --> |docker| N2[Launch nginx container on 8443]
+```
+
 # Part 4 - Mutual TLS
 
 The [Part 4](./Part_4/) folder showcase Mutual TLS (mTLS) whereby we take part 3 and expand the server (nginx) configuration to require the client to provide a certificate.  This is less common for workstations and browsers, and more for ensuring identity is bidirectional, the server provides a certificate indicating who they are and that they were signed by a trusted third party, and the client must provide a TLS certificate as well, also signed by a trusted third party.  
@@ -81,3 +96,13 @@ To demonstrate locally:
 5. Load the "client.pfx" file in your browser's client certificates.  In firefox, this is in privacy and security settings.  It is browser specific, or even development language specific (Python vs Java vs .NET for example).
 5. Open your browser to the TLS_HOST you specified, but at port 8443.  For example, if you used "local.example.com", that would be https://local.example.com:8443/
 
+```mermaid
+flowchart TD
+    A[make demo] -->  B[Everything from Part 3]
+    B --> |openssl| C[Generate Client Key]
+    C --> |openssl| C2[Generate Client CSR]
+    C2--> |openssl| R2[Sign Client CSR]
+    R2 --> |openssl| C3[Create PFX file with client key + certs]
+    C3 --> |docker| N[Create nginx image requiring client auth]
+    N --> |docker| N2[Launch nginx container on 8443]
+```
