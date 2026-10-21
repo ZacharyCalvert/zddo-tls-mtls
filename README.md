@@ -42,6 +42,18 @@ To demonstrate locally:
 4. Update your hosts file to resolve your TLS_HOST value to 127.0.0.1.  On Windows, this file must be edited in Administrator mode at ```C:\Windows\System32\drivers\etc\hosts```.  On Mac, this is at ```/etc/hosts```.  Create a new line in the file like ```127.0.0.1 local.example.com```
 5. Open your browser to the TLS_HOST you specified, but at port 8443.  For example, if you used "local.example.com", that would be https://local.example.com:8443/
 
+```mermaid
+flowchart TD
+    A[make demo] --> |openssl| B[Generate Server Private Key]
+    B --> |openssl| S[Generate Certificate Signing Request]
+    S --> |openssl| R[Generate Root Private Key]
+    R --> |openssl| R2[Generate Root Certificate]
+    R2 --> |openssl| R3[Sign Server CSR]
+    R3 --> |BASH| S2[Combine certificate chain]
+    S2 --> |docker| N[Create nginx image with chain and server key]
+    N --> |docker| N2[Launch nginx container on 8443]
+```
+
 # Part 3 - TLS Signed by Intermediate Certificate
 
 Scripts within the [Part 3](./Part_3/) folder showcase generating a Root Certificate Authority (RCA), generating an Intermediate Certificate Authority (ICA), the RCA used to sign the ICA, and then the ICA sued to sign a server certificate.  Finally, the Makefile will launch a local nginx webservice with the certificate chain and server private key.
