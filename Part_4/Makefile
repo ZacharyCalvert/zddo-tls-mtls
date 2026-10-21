@@ -35,7 +35,7 @@ prepare-chains:
 sign-client:
 	openssl x509 -req -in client.csr -CA rootCA.crt -CAkey rootCA.key -CAcreateserial -days 365 -out client.crt -sha256 -extfile client.cnf
 
-build-certs: clean-certs gen-rca gen-intermediate rca-sign-intermediate gen-server-key intermediate-sign-server prepare-chains gen-client sign-client
+build-certs: clean-certs gen-rca gen-client gen-intermediate rca-sign-intermediate gen-server-key intermediate-sign-server sign-client prepare-chains 
 
 stop:
 	@docker stop tls-demo > /dev/null 2>&1 || true

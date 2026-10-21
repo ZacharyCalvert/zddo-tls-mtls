@@ -2,6 +2,16 @@
 
 This repo is a demonstration repository for showcasing how TLS and mutual TLS works.  It is a back-to-the-basics effort with documentation for providing a strong foundation for 12-factor application developers and web service engineers.  
 
+The audience for this repository is developers and DevOps engineers looking to tinker at the lower levels of TLS certificate management, including self-signed certificates, signed certs from a generated root certificate authority, intermediate certificate authorities, and bi-directional trust using Mutual TLS.
+
+TLS Provides:
+
+- Confidentiality (Encryption) across the network between the client and the server
+- Data integrity (ensures data cannot be forged from services across the network)
+- Authentication (Identity) for the server you're connecting with
+- Chain of trust (I trust authority A, A issued certificate B, B was presented by the server)
+- Non-repudiation (can't deny the authenticity of the server)
+
 # Part 1 - Self Signed TLS
 
 Scripts within the [Part 1](./Part_1/) folder showcase creating your own private key, and using it for launching an nginx local webservice.  
