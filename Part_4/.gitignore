@@ -6,3 +6,4 @@ nginx.conf
 *.csr
 *.key
 *.pfx
+out
