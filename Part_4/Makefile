@@ -44,7 +44,7 @@ stop:
 	@docker stop tls-demo > /dev/null 2>&1 || true
 
 build-image:
-	envsubst '$$TLS_HOST' < nginx_parameterized.conf > nginx.conf
+	envsubst '$$TLS_HOST' < ./nginx/nginx_parameterized.conf > ./out/nginx.conf
 	docker build -t nginx-tls-rca-demo .
 
 run-image: stop
@@ -79,8 +79,8 @@ clean-intermediate:
 	@rm ./out/intermediateCA.csr > /dev/null 2>&1 || true
 	@rm ./out/intermediateCA.key > /dev/null 2>&1 || true
 	@rm ./out/intermediateCA.crt > /dev/null 2>&1 || true
-	@rm .out/intermediateCA.srl > /dev/null 2>&1 || true
-	@rm ./out/ext.cnf > /dev/null 2>&1 || true
+	@rm ./out/intermediateCA.srl > /dev/null 2>&1 || true
+	@rm ./out/server.cnf > /dev/null 2>&1 || true
 
 clean-server:
 	@rm ./out/server.key > /dev/null 2>&1 || true
@@ -88,9 +88,10 @@ clean-server:
 	@rm ./out/server.crt > /dev/null 2>&1 || true
 
 clean-image: stop
-	@rm nginx.conf > /dev/null 2>&1 || true
+	@rm ./out/nginx.conf > /dev/null 2>&1 || true
 
 clean-certs: clean-rca clean-client clean-intermediate clean-server
+	@rm ./out/ssl-bundle.crt
 
 clean: clean-image clean-certs
 	@rmdir out > /dev/null 2>&1 || true

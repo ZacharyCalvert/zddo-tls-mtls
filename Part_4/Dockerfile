@@ -4,15 +4,15 @@ FROM nginx:alpine
 RUN mkdir -p /etc/nginx/ssl
 
 # Custom zddo.zachcalvert.com conf
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY ./out/nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copy hello world index file
-COPY index.html /usr/share/nginx/html/index.html
+COPY ./nginx/index.html /usr/share/nginx/html/index.html
 
 # Copy TLS certificates into the container
-COPY ssl-bundle.crt /etc/nginx/ssl/ssl-bundle.crt
-COPY server.key /etc/nginx/ssl/private.key
-COPY rootCA.crt /etc/nginx/ssl/client_ca.crt
+COPY ./out/ssl-bundle.crt /etc/nginx/ssl/ssl-bundle.crt
+COPY ./out/server.key /etc/nginx/ssl/private.key
+COPY ./out/serverRCA.crt /etc/nginx/ssl/client_ca.crt
 
 # Read only access for key and certificate
 RUN chmod 400 /etc/nginx/ssl/ssl-bundle.crt
