@@ -1,5 +1,5 @@
 MAKEFLAGS += --always-make
-TLS_HOST ?= demo.zachcalvert.com
+export TLS_HOST ?= demo.zachcalvert.com
 
 init:
 	mkdir -p ./out/
@@ -64,6 +64,12 @@ inspect-server:
 inspect-client:
 	openssl x509 -in server.crt -text -noout
 
+python-client:
+	@# Install requirests dependencies
+	pip install -r ./python-client/requirements.txt
+
+	python ./python-client/client.py
+
 clean-rca:
 	@rm ./out/serverRCA.key > /dev/null 2>&1 || true
 	@rm ./out/serverRCA.crt > /dev/null 2>&1 || true
@@ -91,7 +97,7 @@ clean-image: stop
 	@rm ./out/nginx.conf > /dev/null 2>&1 || true
 
 clean-certs: clean-rca clean-client clean-intermediate clean-server
-	@rm ./out/ssl-bundle.crt
+	@rm ./out/ssl-bundle.crt > /dev/null 2>&1 || true
 
 clean: clean-image clean-certs
 	@rmdir out > /dev/null 2>&1 || true
